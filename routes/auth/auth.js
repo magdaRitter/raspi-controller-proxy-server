@@ -17,8 +17,28 @@ router.post('/accessToken', function (req, res) {
     .then(function (resp) {
       if (resp.data.access_token) {
         req.session.token = resp.data.access_token;
+
+        mod.axios({
+          url: 'https://api.github.com/user',
+          method: 'GET',
+          headers: { 'Authorization': "token" + " " + req.session.token }
+        })
+          .then(function (resp) {
+            login = resp.data.login
+
+            if(mod.config.ALLOWED_USERS.includes(login)){
+              res.send(resp.data);
+            }
+            else{
+              res.status(401).send();
+            }
+          })
+          .catch(function (err) {
+            console.log(err);
+            res.send(err);
+          })
       }
-      res.send(resp.data);
+
     })
     .catch(function (err) {
       res.send(err);
