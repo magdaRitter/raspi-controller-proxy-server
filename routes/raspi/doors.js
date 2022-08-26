@@ -8,6 +8,7 @@ gate_signal_url = base_url + '/gate'
 both_signal_url = base_url + '/both'
 
 router.get('/garage', function (req, res) {
+	console.log("sending garage request out to " + garage_signal_url);
     mod.axios({
         url: garage_signal_url,
         method: 'GET',
@@ -17,9 +18,11 @@ router.get('/garage', function (req, res) {
         }
     })
         .then(function (resp) {
+		console.log("garage signal was fired properly");
             res.status(200).send();
         })
         .catch(function (err) {
+		console.log(err)
             res.status(err.status || 500).json({code: err.code, message: err.message})
         })
 })

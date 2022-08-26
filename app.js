@@ -9,7 +9,7 @@ app.use(mod.express.urlencoded({ extended: false }));
 app.use(mod.cookieParser());
 app.use(mod.express.static(mod.path.join(__dirname, 'public')));
 app.use(mod.cors({
-  origin: ['http://localhost:4200'],
+  origin: '*',
   methods: ['GET', 'PUT', 'POST', 'DELETE']
 }))
 app.use(mod.cookieSession({
